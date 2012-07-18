@@ -7,7 +7,7 @@ jq_wait = function(){
      else 
      { 
 		console.log('jq is loaded');
-         jq_ready(); 
+        jq_ready(); 
      }
 }
 loadjquery = function(){
@@ -23,14 +23,37 @@ jq_ready = function(){
 }
 
 var resmouse = 0;
+var dragobj, resobj;
 loadjquery();
 
 resize = function (){
-
-	$('document').mouseup(function(){
-			$('document').unbind('mousemove');
-		});
-		
+dragobj = $('.reschatw');
+resobj =  $('#fbDockChatTabs .fbMercuryChatTab.opened');
+	dragobj.mousedown(function(e){
+	minwidth = 200;
+    minheight = 200;
+    moff = {
+             x:resobj.offset().left - e.pageX,
+             y:resobj.offset().top - e.pageY
+           };
+         $(document).bind({ 'mousemove': function(event) {
+             off = resobj.offset(); 
+             deltaX = off.left - event.pageX;
+             deltaY = off.top - event.pageY;
+             if(resobj.width() > minwidth-1){
+                 resobj.css('width', resobj.width()+deltaX-moff.x);
+             }else{
+                 resobj.css('width',minwidth);
+             }
+             if(resobj.height() > minheight-1){
+                 resobj.css('height', resobj.height()+deltaY-moff.y);
+             }else{
+                 resobj.css('height',minheight);
+             }
+             }
+         });
+     });
+/*
 	$('.reschatw').mousedown(function(){
 		if(resmouse == 0){
 			resmouse = $('.fbMercuryChatTab').offset(); 
@@ -46,10 +69,13 @@ resize = function (){
 			$('#fbDockChatTabs .fbMercuryChatTab.opened').css('height', newh+'px');
 		}});
 	});
+*/
 }
 
 jq_ready = function() {
-$('.titlebarText').css({'margin-left': '20px'});
-$('.titlebarLabel').append('<div class="reschatw lfloat" style="width: 18px;height: 18px;background-image: url(https://s-static.ak.fbcdn.net/rsrc.php/v2/y1/r/HbofewrOY-l.png);position: absolute;margin-top: 0px;top: 1px;left: 1px;background-position-y: 152px;"></div>');  
-resize();
+	$('.titlebarText').css({'margin-left': '20px'});
+	$('.titlebarLabel').append('<div class="reschatw" style="float: left; width: 18px;height: 18px;background-image: url(https://s-static.ak.fbcdn.net/rsrc.php/v2/y1/r/HbofewrOY-l.png);position: absolute;margin-top: 0px;top: 1px;left: 1px;background-position-y: 152px;"></div>');  
+	dragobj = $('.reschatw');
+	resobj =  $('#fbDockChatTabs .fbMercuryChatTab.opened');
+	resize();
 }
