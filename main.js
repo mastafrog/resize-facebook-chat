@@ -21,7 +21,7 @@ jq_ready = function(){
 	console.log('manipulationg dom');
     $('.titlebarText').css({'margin-left': '20px'});  
 }
-
+var somethingnew = "nothing";
 var resmouse = 0;
 var dragobj, resobj;
 loadjquery();
